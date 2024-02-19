@@ -1,0 +1,22 @@
+package org.spring.mvc.aspect;
+
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.stereotype.Component;
+
+@Component
+@Aspect
+public class MyLoggingAspect {
+    @Around("execution(* org.spring.mvc.dao.*.*(..))")
+    public Object aroundAllReposMethodsAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
+        String methodName = methodSignature.getName();
+        System.out.println("Begin work method " + methodName);
+        Object targetMethodResult = proceedingJoinPoint.proceed();
+        System.out.println(methodName + " method completed");
+        return targetMethodResult;
+    }
+}
